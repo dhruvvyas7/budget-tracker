@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Budget Dhruv</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0f0e0c;
@@ -14,10 +14,11 @@
     --text: #f0ede8;
     --muted: #7a776f;
     --accent: #e8c87a;
-    --accent-dim: rgba(232,200,122,0.12);
+    --accent-dim: rgba(232,200,122,0.10);
     --green: #7ec8a0;
-    --green-dim: rgba(126,200,160,0.1);
+    --green-dim: rgba(126,200,160,0.10);
     --red: #e87a7a;
+    --red-dim: rgba(232,122,122,0.10);
     --radius: 14px;
   }
 
@@ -31,79 +32,78 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 16px 60px;
+    padding: 0 16px 80px;
   }
 
-  /* Header */
   header {
-    width: 100%;
-    max-width: 520px;
-    padding: 44px 0 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    width: 100%; max-width: 520px;
+    padding: 44px 0 28px;
   }
 
   .logo-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 4px;
   }
 
   .logo-icon {
-    width: 36px; height: 36px;
+    width: 38px; height: 38px;
     background: var(--accent);
-    border-radius: 10px;
+    border-radius: 11px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   h1 {
     font-family: 'DM Serif Display', serif;
     font-size: 26px;
-    color: var(--text);
     letter-spacing: -0.3px;
   }
 
   .subtitle {
     font-size: 13px;
     color: var(--muted);
-    margin-left: 46px;
+    margin-left: 48px;
   }
 
-  /* Setup banner */
-  #setup-banner {
+  /* API Key section */
+  .key-section {
     width: 100%; max-width: 520px;
-    background: var(--accent-dim);
-    border: 1px solid rgba(232,200,122,0.25);
-    border-radius: var(--radius);
-    padding: 14px 16px;
     margin-bottom: 20px;
-    font-size: 13px;
-    color: var(--accent);
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
   }
 
-  #setup-banner span { flex: 1; line-height: 1.5; }
-
-  #setup-banner a {
-    color: var(--accent);
-    text-underline-offset: 3px;
+  .key-toggle {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 8px 0;
+    user-select: none;
   }
 
-  /* API key input */
-  .api-row {
-    width: 100%; max-width: 520px;
-    display: flex;
+  .key-toggle:hover { color: var(--text); }
+
+  .key-toggle .arrow {
+    transition: transform 0.2s;
+    font-size: 10px;
+  }
+
+  .key-toggle.open .arrow { transform: rotate(90deg); }
+
+  .key-fields {
+    display: none;
+    flex-direction: column;
     gap: 8px;
-    margin-bottom: 24px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-top: 4px;
   }
 
-  .api-row input {
-    flex: 1;
-    background: var(--surface);
+  .key-fields.visible { display: flex; }
+
+  .key-fields input {
+    background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 11px 14px;
@@ -112,34 +112,44 @@
     font-size: 13px;
     outline: none;
     transition: border-color 0.2s;
+    width: 100%;
   }
 
-  .api-row input:focus { border-color: var(--accent); }
-  .api-row input::placeholder { color: var(--muted); }
+  .key-fields input:focus { border-color: var(--accent); }
+  .key-fields input::placeholder { color: var(--muted); }
 
   .btn-save {
     background: var(--accent);
     color: #1a1610;
     border: none;
     border-radius: 10px;
-    padding: 11px 18px;
+    padding: 11px 20px;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    white-space: nowrap;
+    align-self: flex-start;
     transition: opacity 0.15s;
   }
+
   .btn-save:hover { opacity: 0.85; }
 
-  /* Main card */
+  .key-status {
+    font-size: 12px;
+    padding: 4px 0;
+  }
+
+  .key-status.ok { color: var(--green); }
+  .key-status.missing { color: var(--accent); }
+
+  /* Cards */
   .card {
     width: 100%; max-width: 520px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 16px;
+    padding: 22px;
+    margin-bottom: 14px;
   }
 
   .card-title {
@@ -155,12 +165,11 @@
   #drop-zone {
     border: 1.5px dashed var(--border);
     border-radius: var(--radius);
-    padding: 36px 20px;
+    padding: 32px 20px;
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s;
     position: relative;
-    overflow: hidden;
   }
 
   #drop-zone:hover, #drop-zone.dragover {
@@ -174,134 +183,63 @@
     width: 100%; height: 100%;
   }
 
-  .drop-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
-    display: block;
-  }
+  .drop-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .drop-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .drop-sub { font-size: 12px; color: var(--muted); }
 
-  .drop-title {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-
-  .drop-sub {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* Preview */
+  /* File preview */
   #file-preview {
     display: none;
-    margin-top: 14px;
+    margin-top: 12px;
     background: var(--surface2);
     border-radius: 10px;
-    padding: 12px 14px;
-    display: none;
+    padding: 11px 14px;
     align-items: center;
     gap: 10px;
   }
 
-  #file-preview .file-icon { font-size: 22px; }
+  #file-preview .file-icon { font-size: 20px; }
   #file-preview .file-name { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #file-preview .file-remove { cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
+  #file-preview .file-remove { cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; transition: color 0.15s; }
   #file-preview .file-remove:hover { color: var(--red); }
-
-  /* OR divider */
-  .divider {
-    display: flex; align-items: center; gap: 12px;
-    margin: 16px 0;
-    color: var(--muted); font-size: 12px;
-  }
-  .divider::before, .divider::after {
-    content: ''; flex: 1;
-    height: 1px; background: var(--border);
-  }
-
-  /* Manual input */
-  .manual-row {
-    display: flex; align-items: center; gap: 10px;
-  }
-
-  .amount-wrap {
-    position: relative; flex: 1;
-  }
-
-  .amount-wrap .currency {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    color: var(--muted); font-size: 15px; pointer-events: none;
-  }
-
-  .amount-wrap input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px 12px 28px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .amount-wrap input:focus { border-color: var(--accent); }
-  .amount-wrap input::placeholder { color: var(--border); }
 
   /* Extract button */
   #btn-extract {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,200,122,0.2);
+    color: var(--accent);
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 11px;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.15s, border-color 0.15s;
-    display: none;
+    transition: background 0.15s;
   }
 
-  #btn-extract:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  #btn-extract:hover { background: rgba(232,200,122,0.18); }
+  #btn-extract:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* Extraction status */
+  /* Status */
   #extract-status {
     display: none;
-    margin-top: 12px;
-    padding: 10px 14px;
+    margin-top: 10px;
+    padding: 10px 13px;
     border-radius: 10px;
     font-size: 13px;
     align-items: center;
     gap: 8px;
   }
 
-  #extract-status.loading {
-    display: flex;
-    background: var(--surface2);
-    color: var(--muted);
-  }
-
-  #extract-status.success {
-    display: flex;
-    background: var(--green-dim);
-    color: var(--green);
-    border: 1px solid rgba(126,200,160,0.2);
-  }
-
-  #extract-status.error {
-    display: flex;
-    background: rgba(232,122,122,0.1);
-    color: var(--red);
-    border: 1px solid rgba(232,122,122,0.2);
-  }
+  #extract-status.loading { display: flex; background: var(--surface2); color: var(--muted); }
+  #extract-status.success { display: flex; background: var(--green-dim); color: var(--green); border: 1px solid rgba(126,200,160,0.2); }
+  #extract-status.error   { display: flex; background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,122,122,0.2); }
 
   .spinner {
-    width: 14px; height: 14px;
+    width: 13px; height: 13px;
     border: 2px solid var(--border);
     border-top-color: var(--muted);
     border-radius: 50%;
@@ -311,21 +249,50 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Name row */
+  /* Divider */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 16px 0;
+    color: var(--muted); font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* Amount input */
+  .amount-wrap { position: relative; }
+  .amount-wrap .currency {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 16px; pointer-events: none;
+  }
+  .amount-wrap input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 14px 13px 28px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .amount-wrap input:focus { border-color: var(--accent); }
+  .amount-wrap input::placeholder { color: var(--border); }
+
+  /* Name / date */
   .name-date-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 
   .field-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
   }
 
   .field-input {
@@ -340,7 +307,6 @@
     outline: none;
     transition: border-color 0.2s;
   }
-
   .field-input:focus { border-color: var(--accent); }
   .field-input::placeholder { color: var(--muted); }
 
@@ -357,56 +323,38 @@
     border-radius: var(--radius);
     padding: 18px 16px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
     text-align: left;
-    position: relative;
-    overflow: hidden;
   }
 
-  .col-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.15s;
+  .col-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
   }
-
-  .col-btn:hover { border-color: var(--accent); }
-  .col-btn:hover::before { opacity: 1; background: var(--accent-dim); }
 
   .col-btn:active { transform: scale(0.97); }
+  .col-btn.submitting { opacity: 0.45; pointer-events: none; }
 
-  .col-btn .col-emoji { font-size: 20px; margin-bottom: 4px; }
+  .col-btn .col-emoji { font-size: 20px; margin-bottom: 5px; display: block; }
   .col-btn .col-name { font-size: 14px; font-weight: 500; color: var(--text); }
   .col-btn .col-hint { font-size: 11px; color: var(--muted); }
 
-  .col-btn.submitting {
-    opacity: 0.5; pointer-events: none;
+  /* Submit status */
+  #submit-status {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 13px;
+    border-radius: 10px;
+    font-size: 13px;
+    align-items: center;
+    gap: 8px;
   }
-
-  /* Toast */
-  #toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--text);
-    color: var(--bg);
-    padding: 12px 22px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    white-space: nowrap;
-    z-index: 999;
-    pointer-events: none;
-  }
-
-  #toast.show { transform: translateX(-50%) translateY(0); }
-  #toast.error { background: var(--red); color: #fff; }
+  #submit-status.loading { display: flex; background: var(--surface2); color: var(--muted); }
+  #submit-status.success { display: flex; background: var(--green-dim); color: var(--green); border: 1px solid rgba(126,200,160,0.2); }
+  #submit-status.error   { display: flex; background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,122,122,0.2); }
 
   /* History */
   #history-list { display: flex; flex-direction: column; gap: 8px; }
@@ -420,30 +368,35 @@
     animation: fadeIn 0.3s ease;
   }
 
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-  .history-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
+  .history-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .history-name { flex: 1; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .history-col { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .history-amount { font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+  .empty-history { text-align: center; color: var(--muted); font-size: 13px; padding: 12px 0; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 500;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    z-index: 999;
+    pointer-events: none;
   }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.error-toast { background: var(--red); color: #fff; }
 
-  .history-name { flex: 1; color: var(--text); }
-  .history-col { color: var(--muted); font-size: 12px; }
-  .history-amount { font-weight: 600; color: var(--accent); }
-
-  .empty-history {
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    padding: 16px 0;
-  }
-
-  /* Responsive */
   @media (max-width: 420px) {
     h1 { font-size: 22px; }
-    .col-grid { grid-template-columns: 1fr 1fr; }
     .name-date-row { grid-template-columns: 1fr; }
   }
 </style>
@@ -458,21 +411,19 @@
   <p class="subtitle">Upload invoices · extract amounts · log to Google Sheets</p>
 </header>
 
-<!-- API Key setup -->
-<div id="setup-banner">
-  <span>⚠️ You need two API keys to use this tool. <strong>Claude API key</strong> (from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>) to read invoices, and a <strong>Google API key + OAuth</strong> to write to your sheet. See instructions below ↓</span>
+<!-- API Key section (collapsible) -->
+<div class="key-section">
+  <div class="key-toggle" id="key-toggle" onclick="toggleKeys()">
+    <span class="arrow">▶</span>
+    <span id="key-status-inline" class="key-status missing">⚙ API key required — tap to set up</span>
+  </div>
+  <div class="key-fields" id="key-fields">
+    <input type="password" id="claude-key" placeholder="Claude API key  (sk-ant-...)" autocomplete="off">
+    <button class="btn-save" onclick="saveKeys()">Save key</button>
+  </div>
 </div>
 
-<div class="api-row">
-  <input type="password" id="claude-key" placeholder="Claude API key  (sk-ant-...)" autocomplete="off">
-  <button class="btn-save" onclick="saveKeys()">Save</button>
-</div>
-
-<div class="api-row" style="margin-top:-16px">
-  <input type="password" id="sheets-key" placeholder="Google Sheets API key (AIza...)" autocomplete="off">
-</div>
-
-<!-- Upload Card -->
+<!-- Invoice Card -->
 <div class="card">
   <div class="card-title">Invoice</div>
 
@@ -480,7 +431,7 @@
     <input type="file" id="file-input" accept="image/*,.pdf" onchange="handleFile(this.files[0])">
     <span class="drop-icon">📄</span>
     <div class="drop-title">Drop invoice here</div>
-    <div class="drop-sub">PDF or image (JPG, PNG, HEIC)</div>
+    <div class="drop-sub">PDF or image — JPG, PNG, HEIC</div>
   </div>
 
   <div id="file-preview">
@@ -490,7 +441,7 @@
   </div>
 
   <div id="extract-status">
-    <div class="spinner" id="spinner"></div>
+    <div class="spinner" id="extract-spinner"></div>
     <span id="extract-msg"></span>
   </div>
 
@@ -498,16 +449,14 @@
 
   <div class="divider">or enter manually</div>
 
-  <div class="manual-row">
-    <div class="amount-wrap">
-      <span class="currency">$</span>
-      <input type="number" id="amount-input" placeholder="0.00" step="0.01" min="0">
-    </div>
+  <div class="amount-wrap">
+    <span class="currency">$</span>
+    <input type="number" id="amount-input" placeholder="0.00" step="0.01" min="0">
   </div>
 
-  <div class="name-date-row" style="margin-top:12px">
+  <div class="name-date-row">
     <div>
-      <div class="field-label">Name / Description</div>
+      <div class="field-label">Description</div>
       <input type="text" class="field-input" id="name-input" placeholder="e.g. Grocery run">
     </div>
     <div>
@@ -517,7 +466,7 @@
   </div>
 </div>
 
-<!-- Column Buttons Card -->
+<!-- Column buttons -->
 <div class="card">
   <div class="card-title">Add to column</div>
   <div class="col-grid">
@@ -542,9 +491,13 @@
       <span class="col-hint">Everything else</span>
     </button>
   </div>
+  <div id="submit-status">
+    <div class="spinner" id="submit-spinner"></div>
+    <span id="submit-msg"></span>
+  </div>
 </div>
 
-<!-- History Card -->
+<!-- History -->
 <div class="card">
   <div class="card-title">This session</div>
   <div id="history-list">
@@ -552,86 +505,107 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
-const SHEET_ID = '1UCRScDmgDr4iKrlYxQAwWcnuTOIfLMJyThKkiJRubQc';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2-lhPzxt7D5_1vytGS8zT6PLOPFBKE86RumMagLnCg_3DSZL7lcZlhb3tGUewGSwNyQ/exec';
+
 let currentFile = null;
-let currentFileData = null; // base64
+let currentFileData = null;
 
 // Set today's date
 document.getElementById('date-input').value = new Date().toISOString().split('T')[0];
 
-// Load saved keys
+// Load saved key on startup
 window.addEventListener('load', () => {
   const ck = localStorage.getItem('claude_key');
-  const sk = localStorage.getItem('sheets_key');
-  if (ck) document.getElementById('claude-key').value = ck;
-  if (sk) document.getElementById('sheets-key').value = sk;
-  if (ck && sk) document.getElementById('setup-banner').style.display = 'none';
+  if (ck) {
+    document.getElementById('claude-key').value = ck;
+    setKeyStatus(true);
+  } else {
+    setKeyStatus(false);
+  }
 });
+
+function setKeyStatus(ok) {
+  const el = document.getElementById('key-status-inline');
+  if (ok) {
+    el.textContent = '✓ Claude API key saved';
+    el.className = 'key-status ok';
+    document.getElementById('key-fields').classList.remove('visible');
+    document.getElementById('key-toggle').classList.remove('open');
+  } else {
+    el.textContent = '⚙ Claude API key required — tap to set up';
+    el.className = 'key-status missing';
+  }
+}
+
+function toggleKeys() {
+  const fields = document.getElementById('key-fields');
+  const toggle = document.getElementById('key-toggle');
+  const isOpen = fields.classList.contains('visible');
+  fields.classList.toggle('visible', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
 
 function saveKeys() {
   const ck = document.getElementById('claude-key').value.trim();
-  const sk = document.getElementById('sheets-key').value.trim();
-  if (!ck || !sk) { showToast('Enter both API keys', true); return; }
+  if (!ck) { showToast('Enter your Claude API key', true); return; }
   localStorage.setItem('claude_key', ck);
-  localStorage.setItem('sheets_key', sk);
-  document.getElementById('setup-banner').style.display = 'none';
-  showToast('Keys saved ✓');
+  setKeyStatus(true);
+  showToast('Key saved ✓');
 }
 
-// Drag and drop
+// Drag & drop
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
 dz.addEventListener('drop', e => {
-  e.preventDefault();
-  dz.classList.remove('dragover');
-  const f = e.dataTransfer.files[0];
-  if (f) handleFile(f);
+  e.preventDefault(); dz.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
 });
 
 function handleFile(file) {
   if (!file) return;
   currentFile = file;
   const ext = file.name.split('.').pop().toLowerCase();
-  const icon = ext === 'pdf' ? '📄' : '🖼️';
-  document.getElementById('preview-icon').textContent = icon;
+  document.getElementById('preview-icon').textContent = ext === 'pdf' ? '📄' : '🖼️';
   document.getElementById('preview-name').textContent = file.name;
   document.getElementById('file-preview').style.display = 'flex';
   document.getElementById('btn-extract').style.display = 'block';
   document.getElementById('drop-zone').style.display = 'none';
-  setStatus('', '');
+  setExtractStatus('', '');
 
-  // Read as base64
   const reader = new FileReader();
-  reader.onload = e => {
-    currentFileData = e.target.result.split(',')[1];
-  };
+  reader.onload = e => { currentFileData = e.target.result.split(',')[1]; };
   reader.readAsDataURL(file);
 }
 
 function clearFile() {
-  currentFile = null;
-  currentFileData = null;
+  currentFile = null; currentFileData = null;
   document.getElementById('file-preview').style.display = 'none';
   document.getElementById('btn-extract').style.display = 'none';
   document.getElementById('drop-zone').style.display = 'block';
   document.getElementById('file-input').value = '';
-  setStatus('', '');
+  setExtractStatus('', '');
 }
 
-function setStatus(type, msg) {
+function setExtractStatus(type, msg) {
   const el = document.getElementById('extract-status');
-  const msgEl = document.getElementById('extract-msg');
-  const spinner = document.getElementById('spinner');
   if (!type) { el.style.display = 'none'; return; }
   el.className = type;
   el.style.display = 'flex';
-  msgEl.textContent = msg;
-  spinner.style.display = type === 'loading' ? 'block' : 'none';
+  document.getElementById('extract-msg').textContent = msg;
+  document.getElementById('extract-spinner').style.display = type === 'loading' ? 'block' : 'none';
+}
+
+function setSubmitStatus(type, msg) {
+  const el = document.getElementById('submit-status');
+  if (!type) { el.style.display = 'none'; return; }
+  el.className = type;
+  el.style.display = 'flex';
+  document.getElementById('submit-msg').textContent = msg;
+  document.getElementById('submit-spinner').style.display = type === 'loading' ? 'block' : 'none';
 }
 
 async function extractAmount() {
@@ -639,7 +613,7 @@ async function extractAmount() {
   if (!claudeKey) { showToast('Save your Claude API key first', true); return; }
   if (!currentFileData) { showToast('No file loaded', true); return; }
 
-  setStatus('loading', 'Reading invoice with Claude AI…');
+  setExtractStatus('loading', 'Reading invoice with Claude AI…');
   document.getElementById('btn-extract').disabled = true;
 
   try {
@@ -661,12 +635,12 @@ async function extractAmount() {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 200,
+        max_tokens: 100,
         messages: [{
           role: 'user',
           content: [
             contentBlock,
-            { type: 'text', text: 'Look at this invoice/receipt. Extract ONLY the final total amount I need to pay. Reply with ONLY the number (no currency symbol, no text). Example: 42.50' }
+            { type: 'text', text: 'Look at this invoice or receipt. Find the final total amount to pay. Reply with ONLY the number — no currency symbol, no words, no explanation. Example reply: 42.50' }
           ]
         }]
       })
@@ -677,81 +651,55 @@ async function extractAmount() {
 
     const raw = data.content[0].text.trim().replace(/[^0-9.]/g, '');
     const amount = parseFloat(raw);
-    if (isNaN(amount)) throw new Error('Could not find an amount in this invoice');
+    if (isNaN(amount)) throw new Error('Could not find an amount — try entering manually');
 
     document.getElementById('amount-input').value = amount.toFixed(2);
-    setStatus('success', `Found: $${amount.toFixed(2)} — confirm below or edit`);
+    setExtractStatus('success', `Found $${amount.toFixed(2)} — confirm or edit, then pick a column ↓`);
   } catch (err) {
-    setStatus('error', err.message || 'Failed to read invoice');
+    setExtractStatus('error', err.message || 'Failed to read invoice');
   }
 
   document.getElementById('btn-extract').disabled = false;
 }
 
 async function addToSheet(colName, colLetter) {
-  const sheetsKey = localStorage.getItem('sheets_key');
-  if (!sheetsKey) { showToast('Save your Google Sheets API key first', true); return; }
-
-  const amountRaw = document.getElementById('amount-input').value;
-  const amount = parseFloat(amountRaw);
-  if (!amountRaw || isNaN(amount) || amount <= 0) {
-    showToast('Enter a valid amount first', true); return;
-  }
+  const amount = parseFloat(document.getElementById('amount-input').value);
+  if (!amount || amount <= 0) { showToast('Enter a valid amount first', true); return; }
 
   const name = document.getElementById('name-input').value.trim() || '—';
   const date = document.getElementById('date-input').value || new Date().toISOString().split('T')[0];
 
-  // Build the row: A=Name, B=Date, then only the selected column gets the amount
-  // We use sparse range writes: write to A, B, and the specific column
-  const colIndex = { C: 2, D: 3, E: 4, F: 5 }[colLetter];
-
-  // Build row array with empty strings
-  const row = ['', '', '', '', '', ''];
-  row[0] = name;
-  row[1] = date;
-  row[colIndex] = amount;
-
-  const btns = document.querySelectorAll('.col-btn');
-  btns.forEach(b => b.classList.add('submitting'));
+  document.querySelectorAll('.col-btn').forEach(b => b.classList.add('submitting'));
+  setSubmitStatus('loading', `Adding to ${colName}…`);
 
   try {
-    // First, find the next empty row
-    const rangeRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/A:A?key=${sheetsKey}`
-    );
-    const rangeData = await rangeRes.json();
-    if (rangeData.error) throw new Error(rangeData.error.message);
+    const payload = { name, date, amount, col: colLetter };
 
-    const nextRow = (rangeData.values ? rangeData.values.length : 1) + 1;
-    const range = `Sheet1!A${nextRow}:F${nextRow}`;
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
-    // Append the row
-    const writeRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=USER_ENTERED&key=${sheetsKey}`,
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ range, majorDimension: 'ROWS', values: [row] })
-      }
-    );
-    const writeData = await writeRes.json();
-    if (writeData.error) throw new Error(writeData.error.message);
-
-    // Success
+    // no-cors means we can't read the response, but if no error thrown it worked
     addHistory(name, colName, amount);
-    showToast(`Added $${amount.toFixed(2)} to ${colName} ✓`);
+    setSubmitStatus('success', `Added $${amount.toFixed(2)} to "${colName}" ✓`);
+    showToast(`$${amount.toFixed(2)} → ${colName} ✓`);
 
-    // Reset form
+    // Reset
     document.getElementById('amount-input').value = '';
     document.getElementById('name-input').value = '';
-    setStatus('', '');
+    setExtractStatus('', '');
     clearFile();
 
+    setTimeout(() => setSubmitStatus('', ''), 4000);
   } catch (err) {
-    showToast(err.message || 'Failed to write to sheet', true);
+    setSubmitStatus('error', err.message || 'Failed — check your connection');
+    showToast('Failed to write to sheet', true);
   }
 
-  btns.forEach(b => b.classList.remove('submitting'));
+  document.querySelectorAll('.col-btn').forEach(b => b.classList.remove('submitting'));
 }
 
 function addHistory(name, col, amount) {
@@ -763,24 +711,24 @@ function addHistory(name, col, amount) {
   item.className = 'history-item';
   item.innerHTML = `
     <div class="history-dot"></div>
-    <span class="history-name">${escapeHtml(name)}</span>
-    <span class="history-col">${escapeHtml(col)}</span>
+    <span class="history-name">${esc(name)}</span>
+    <span class="history-col">${esc(col)}</span>
     <span class="history-amount">$${amount.toFixed(2)}</span>
   `;
   list.prepend(item);
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 let toastTimer;
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = isError ? 'error show' : 'show';
+  t.className = isError ? 'error-toast show' : 'show';
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.className = isError ? 'error' : '', 3000);
+  toastTimer = setTimeout(() => { t.className = ''; }, 3000);
 }
 </script>
 </body>
